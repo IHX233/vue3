@@ -1,21 +1,19 @@
 <template>
-  <div>{{ name }}</div>
-  <div>{{ age }}</div>
-  <div @click="changeInfo">click</div>
+  <demo :title="'vue3'" @hello="hello"></demo>
+  <computed></computed>
 </template>
 
 <script>
-import {ref} from 'vue'
+import Demo from './components/Demo'
+import Computed from './components/Computed'
 export default {
   name: 'App',
+  components:{Demo,Computed},
   setup(){
-    let name = ref('ihx')
-    let age = ref(18)
-    function changeInfo(){
-      name.value = 'gf'
-      age.value = 24
+    function hello(value){
+      alert(value)
     }
-    return{name,age,changeInfo}
+    return {hello}
   }
 }
 </script>
