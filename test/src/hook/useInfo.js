@@ -12,5 +12,5 @@ export default function(){
     onMounted(()=>{
         console.log(1)
     })
-    return gf
+    return {gf,change}
 }
