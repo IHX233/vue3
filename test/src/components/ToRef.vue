@@ -20,7 +20,8 @@
       return{
         person,
         workType:toRef(person.work,'type'),
-        workName:toRef(person.work,'name'),
+        workName:toRef
+        (person.work,'name'),
         ...toRefs(person)
 
     }
