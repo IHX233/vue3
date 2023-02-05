@@ -15,5 +15,8 @@ module.exports = {
         "vue"
     ],
     "rules": {
+        quotes:0,
+        'quote-props':0,
+        indent:0
     }
 };
