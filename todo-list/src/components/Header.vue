@@ -1,12 +1,31 @@
 <template>
-    <div>
-        <input type="text" placeholder="请输入你的任务名称，按回车键确认">
+    <div class="todo-header">
+        <input type="text" placeholder="请输入你的任务名称，按回车键确认" @keyup.enter="add" v-model="title">
     </div>
 </template>
 <script>
-  import { defineComponent } from 'vue';
+  import { defineComponent,ref } from 'vue';
   export default defineComponent({
-    name:'Header'
+    name:'Header',
+    setup(props,context){
+        let title = ref('')
+        
+        let add = ()=>{
+            if(!title.value.trim()) return
+            const todo = {
+                title:title.value,
+                id:Date.now(),
+                isCompleted:false
+            }
+            context.emit('addTodo',todo)
+            title.value = ''
+        }
+        return{
+            title,
+            add
+        }
+       
+    }
   })
 </script>
 <style scoped>

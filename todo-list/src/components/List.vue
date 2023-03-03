@@ -1,6 +1,6 @@
 <template>
     <ul class="todo-main">
-        <Item></Item>
+        <Item v-for="(todo,index) in todos" :key="todo.id" :todo="todo" :index="index" :del-todo="delTodo"></Item>
     </ul>
 </template>
 <script>
@@ -8,7 +8,8 @@
   import Item from './Item.vue'
   export default defineComponent({
     name:'List',
-    components:{Item}
+    components:{Item},
+    props:['todos','delTodo']
   })
 </script>
 <style scoped>
