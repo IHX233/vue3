@@ -2,8 +2,8 @@
   <div class="todo-container">
     <div class="todo-wrap">
       <Header @addTodo="addTodo"></Header>
-      <List :todos="todos" :del-todo="delTodo"></List>
-      <Footer></Footer>
+      <List :todos="todos" :del-todo="delTodo" :update-todo="updateTodo"></List>
+      <Footer :todos="todos" :check-all="checkAll"></Footer>
     </div>
   </div>
 </template>
@@ -29,10 +29,20 @@
       const delTodo = (index)=>{
         state.todos.splice(index,1)
       }
+      const updateTodo = (todo,val)=>{
+        todo.isCompleted = val
+      }
+      const checkAll = (val)=>{
+        state.todos.forEach(item=>{
+          item.isCompleted = val
+        })
+      }
       return {
         ...toRefs(state),
         addTodo,
-        delTodo
+        delTodo,
+        updateTodo,
+        checkAll
       }
     }
   })

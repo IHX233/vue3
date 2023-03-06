@@ -1,16 +1,36 @@
 <template>
     <div class="todo-footer">
         <label>
-            <input type="checkbox">
+            <input type="checkbox" v-model="isCheckAll">
         </label>
-        <span><span>已完成0</span>/全部2</span>
+        <span><span>已完成{{ completedCount }}</span>/全部{{ todos.length }}</span>
         <button class="btn btn-danger">清除已完成任务</button>
     </div>
 </template>
 <script>
-  import { defineComponent } from 'vue';
+  import { defineComponent ,computed} from 'vue';
   export default defineComponent({
-    name:'Footer'
+    name:'Footer',
+    props:['todos','checkAll'],
+    setup(props){
+        const completedCount = computed(()=>{
+            return props.todos.reduce(
+                    (pre,todo) => pre + (todo.isCompleted?1:0),0
+                )
+        })
+        const isCheckAll = computed({
+            get(){
+             return  completedCount.value > 0 && props.todos.length ===  completedCount.value
+            },
+            set(val){
+               props.checkAll(val) 
+            }
+        })
+        return{
+            isCheckAll,
+            completedCount
+        }
+    }
   })
 </script>
 <style scoped>
