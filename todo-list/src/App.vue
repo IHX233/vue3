@@ -3,25 +3,22 @@
     <div class="todo-wrap">
       <Header @addTodo="addTodo"></Header>
       <List :todos="todos" :del-todo="delTodo" :update-todo="updateTodo"></List>
-      <Footer :todos="todos" :check-all="checkAll"></Footer>
+      <Footer :todos="todos" :check-all="checkAll" @clearAllCompleted="clearAllCompleted"></Footer>
     </div>
   </div>
 </template>
 <script>
-  import { defineComponent,reactive ,toRefs} from 'vue';
+  import { defineComponent,reactive ,toRefs,onMounted,watch} from 'vue';
   import Header from './components/Header.vue'
   import List from './components/List.vue'
   import Footer from './components/Footer.vue'
+  import {saveTodos,readTodos} from './util/localstorage'
   export default defineComponent({
     name:'App',
     components:{Header,List,Footer},
     setup(){
       const state = reactive({
-        todos:[
-          {id:1,title:'eat',isCompleted:false},
-          {id:2,title:'sleep',isCompleted:false},
-          {id:3,title:'play',isCompleted:false},
-        ]
+        todos:[]
       })
       const addTodo = (todo)=>{
         state.todos.unshift(todo)
@@ -37,12 +34,25 @@
           item.isCompleted = val
         })
       }
+      const clearAllCompleted = ()=>{
+        state.todos = state.todos.filter(item=>!item.isCompleted)
+      }
+      onMounted(()=>{
+        setTimeout(()=>{
+          state.todos = readTodos()
+        },1000)
+        
+      })
+      watch(()=>state.todos,(value)=>{
+        saveTodos(value)
+      },{deep:true})
       return {
         ...toRefs(state),
         addTodo,
         delTodo,
         updateTodo,
-        checkAll
+        checkAll,
+        clearAllCompleted
       }
     }
   })

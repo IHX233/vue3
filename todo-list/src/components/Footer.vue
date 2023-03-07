@@ -4,7 +4,7 @@
             <input type="checkbox" v-model="isCheckAll">
         </label>
         <span><span>已完成{{ completedCount }}</span>/全部{{ todos.length }}</span>
-        <button class="btn btn-danger">清除已完成任务</button>
+        <button class="btn btn-danger" @click="clearAllCompleted">清除已完成任务</button>
     </div>
 </template>
 <script>
@@ -12,7 +12,7 @@
   export default defineComponent({
     name:'Footer',
     props:['todos','checkAll'],
-    setup(props){
+    setup(props,context){
         const completedCount = computed(()=>{
             return props.todos.reduce(
                     (pre,todo) => pre + (todo.isCompleted?1:0),0
@@ -26,9 +26,13 @@
                props.checkAll(val) 
             }
         })
+        const clearAllCompleted = function(){
+            context.emit('clearAllCompleted')
+        }
         return{
             isCheckAll,
-            completedCount
+            completedCount,
+            clearAllCompleted
         }
     }
   })
